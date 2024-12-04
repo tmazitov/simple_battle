@@ -1,8 +1,8 @@
 import MoveController from "./controllers/moveController.js";
-import StayController from "./controllers/stayController.js";
 import Cube from "./objs/cube.js";
 import Point from "./types/point.js";
 import Size from "./types/size.js";
+import PressedKeysManager from "./utils/pressedKeysManager.js";
 
 class App {
     
@@ -25,15 +25,16 @@ class App {
         sceneElem.appendChild(renderer.domElement);
 
         camera.position.z = 5;
-        const stayController = new StayController("keyup")
-        const moveController = new MoveController("keydown");
+        const pressedKeys = new PressedKeysManager();
+        const moveStartController = new MoveController("keydown", pressedKeys);
+        const moveStopController = new MoveController("keyup", pressedKeys);
         const cube = new Cube(
             new Point(0, 0, 0),
             new Size(1, 1, 1),
             { color: 0xff0000 }
         );
-        cube.addController(stayController);
-        cube.addController(moveController);
+        cube.addController(moveStartController);
+        cube.addController(moveStopController);
         cube.mount(scene);
 
         this.#renderer = renderer;
