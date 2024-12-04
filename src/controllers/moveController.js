@@ -20,7 +20,7 @@ class MoveController extends Controller{
         const target = this.getTarget();
         if (!target)
             return;
-        if (!target.setMoveVector || !target.getSpeed) {
+        if (!target.setMoveVector || !target.getSpeed || !target.getRotation) {
             throw ErrTargetIsUnmovable
         }
 
@@ -31,7 +31,8 @@ class MoveController extends Controller{
             this.#addPressedKey(ev)
         }
 
-        const vector = this.#getResultVector(speed)
+        const rotateY = target.getRotation().y
+        const vector = this.#getResultVector(speed, rotateY)
 
         if (vector.length() == 0) {
             target.setMoveVector(null)
@@ -44,25 +45,29 @@ class MoveController extends Controller{
      * Return the result vector of the movement
      * @param {Number} speed - speed of the game object
      */
-    #getResultVector(speed){
+    #getResultVector(speed, angle){
+        const pressedKeys = [
+            {name: "W",value : this.#pressedKeys.get("W"), angle : Math.PI * 0},
+            {name: "A",value : this.#pressedKeys.get("A"), angle : Math.PI * 1/2},
+            {name: "S",value : this.#pressedKeys.get("S"), angle : Math.PI * 1},
+            {name: "D",value : this.#pressedKeys.get("D"), angle : Math.PI * 3/2},
+        ]
+        
+        if (pressedKeys.find(key => key.value) === undefined) {
+            return new THREE.Vector3(0, 0, 0)
+        }
+
         const vector = new THREE.Vector3(0, 0, 0)
-        if (this.#pressedKeys.get("W")) {
-            vector.add(new THREE.Vector3(0, 0, speed))
-        }
-        if (this.#pressedKeys.get("A")) {
-            vector.add(new THREE.Vector3(speed, 0, 0))
-        }
-        if (this.#pressedKeys.get("S")) {
-            vector.add(new THREE.Vector3(0, 0, -speed))
-        }
-        if (this.#pressedKeys.get("D")) {
-            vector.add(new THREE.Vector3(-speed, 0, 0))
-        }
 
-        if (vector.x != 0 && vector.z != 0) {
-            vector.divideScalar(Math.sqrt(2))
-        } 
+        pressedKeys.forEach((pressedKey) => {
+            if (!pressedKey.value)
+                return
+            angle += pressedKey.angle
+        })
 
+        vector.x = Math.sin(angle) * speed * -1
+        vector.z = Math.cos(angle) * speed * -1
+        
         return vector
     }
     

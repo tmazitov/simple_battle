@@ -72,6 +72,22 @@ class Cube extends GameObj{
     getPosition(){
         return this.#instance.position
     }
+
+    getRotation(){
+        return this.#instance.rotation
+    }
+
+    setRotation({x, y, z}) {
+        if (x) {
+            this.#instance.rotation.x += 0.01 * x             
+        } 
+        if (y) {
+            this.#instance.rotation.y += 0.01 * y
+        }
+        if (z) {
+            this.#instance.rotation.z += 0.01 * z
+        }
+    }
 }
 
 export default Cube;

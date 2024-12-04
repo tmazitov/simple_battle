@@ -18,7 +18,7 @@ class App {
         // Set up the scene, camera, and renderer
         const sceneElem = document.querySelector(elementId);
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x777777);
+        scene.background = new THREE.Color(0x73ace6);
         // const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer();
         renderer.setSize(sceneElem.offsetWidth, sceneElem.offsetHeight);
@@ -41,6 +41,13 @@ class App {
             { color: 0x5e3b2c }
         )
         tree.mount(scene)
+
+        const tree1 = new Cube(
+            new Point(-10, 0, 5),
+            new Size(1, 2, 1),
+            { color: 0x303975 }
+        )
+        tree1.mount(scene)
 
         this.#renderer = renderer;
 
