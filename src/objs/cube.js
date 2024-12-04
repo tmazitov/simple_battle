@@ -4,6 +4,7 @@ import GameObj from "./gameObj.js"
 
 class CubeParams {
     color = 0x00ff00
+    isMovable = false
 }
 
 class Cube extends GameObj{
@@ -11,6 +12,7 @@ class Cube extends GameObj{
     #instance
     #geometry
     #material
+    #params
 
     #moveSpeed = 0.1
     #moveVector
@@ -22,15 +24,17 @@ class Cube extends GameObj{
      * @param {CubeParams} params - additional parameters for the cube
      */
     constructor(pos, size, params=new CubeParams()) {
-        super(pos, { isMovable: true });
+        super(pos, { isMovable: params.isMovable });
         this.#geometry = new THREE.BoxGeometry(size.width, size.height, size.depth);
-        this.#material = new THREE.MeshBasicMaterial({ color: params.color });
+        this.#material = new THREE.MeshBasicMaterial({ color: params.color});
 
         // Combine geometry and material into a mesh
         this.#instance = new THREE.Mesh(this.#geometry, this.#material);
         this.#instance.position.x = pos.x;
         this.#instance.position.y = pos.y;
         this.#instance.position.z = pos.z;
+
+        this.#params = params
     }
 
 
@@ -40,8 +44,7 @@ class Cube extends GameObj{
     }
 
     update(){
-        console.log(`Cube position:`, this.#instance.position)
-        if (this.#moveVector) {
+        if (this.#params.isMovable && this.#moveVector) {
             this.move()
         }
     }
@@ -64,6 +67,10 @@ class Cube extends GameObj{
 
     getSpeed(){
         return this.#moveSpeed
+    }
+
+    getPosition(){
+        return this.#instance.position
     }
 }
 

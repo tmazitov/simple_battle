@@ -26,9 +26,9 @@ class MoveController extends Controller{
 
         const speed = target.getSpeed()
         if (ev.type == "keyup") {
-            this.delPressedKey(ev)
+            this.#delPressedKey(ev)
         } else if (ev.type == "keydown") {
-            this.addPressedKey(ev)
+            this.#addPressedKey(ev)
         }
 
         const vector = this.#getResultVector(speed)
@@ -47,28 +47,26 @@ class MoveController extends Controller{
     #getResultVector(speed){
         const vector = new THREE.Vector3(0, 0, 0)
         if (this.#pressedKeys.get("W")) {
-            console.log("W")
-            vector.add(new THREE.Vector3(0, 0, -speed))
-        }
-        if (this.#pressedKeys.get("A")) {
-            vector.add(new THREE.Vector3(-speed, 0, 0))
-        }
-        if (this.#pressedKeys.get("S")) {
             vector.add(new THREE.Vector3(0, 0, speed))
         }
-        if (this.#pressedKeys.get("D")) {
+        if (this.#pressedKeys.get("A")) {
             vector.add(new THREE.Vector3(speed, 0, 0))
+        }
+        if (this.#pressedKeys.get("S")) {
+            vector.add(new THREE.Vector3(0, 0, -speed))
+        }
+        if (this.#pressedKeys.get("D")) {
+            vector.add(new THREE.Vector3(-speed, 0, 0))
         }
 
         if (vector.x != 0 && vector.z != 0) {
             vector.divideScalar(Math.sqrt(2))
         } 
 
-        console.log({vector})
         return vector
     }
     
-    addPressedKey(ev){
+    #addPressedKey(ev){
         switch (ev.code) {
             case "KeyW":
                 this.#pressedKeys.set("W", true)
@@ -85,7 +83,7 @@ class MoveController extends Controller{
         }
     }
 
-    delPressedKey(ev){
+    #delPressedKey(ev){
         switch (ev.code) {
             case "KeyW":
                 this.#pressedKeys.del("W")
