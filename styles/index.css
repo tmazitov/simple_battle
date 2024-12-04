@@ -1,0 +1,14 @@
+#scene {
+    height: 100%;
+}
+
+#game {
+    height: 100%;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+canvas { display: block; }

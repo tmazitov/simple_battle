@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Battle Game</title>
+    <link rel="stylesheet" href="./styles/index.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+</head>
+<body>
+    <div id="game">
+        <div id="scene"></div>
+    </div>
+</body>
+<script type="module">
+    import App from './src/main.js';
+    window.onload = () => {
+        window.app = new App("#scene");
+        window.app.start();
+    }
+</script>
+</html>
